@@ -41,7 +41,15 @@ sudo mv ./kubectl /usr/local/bin
 kubectl version --short --client
 ```
 
-### Step 6: Create the EKS Cluster
+### Step 6:
+login as aws user for this first need to create a user or if you have exiting user then got to security and create on access key and secret key.
+
+```bash
+aws configure
+// give access key, secret key, output - json and region
+```
+
+### Step 7: Create the EKS Cluster
 
 The following command creates a new EKS cluster named EKS-1 in the ap-south-1 region. No worker nodes will be created at this stage.
 
