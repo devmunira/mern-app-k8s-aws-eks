@@ -19,6 +19,12 @@ To deploy your MERN (MongoDB, Express.js, React.js, Node.js) application in Kube
 ### Step 3: Configure AWS Credentials
 
 `aws configure` Make sure you have created your credentials in the AWS IAM service.
+login as aws user for this first need to create a user or if you have exiting user then got to security and create on access key and secret key.
+
+```bash
+aws configure
+// give access key, secret key, output - json and region
+```
 
 ### Step 4: Install eksctl
 
@@ -41,22 +47,14 @@ sudo mv ./kubectl /usr/local/bin
 kubectl version --short --client
 ```
 
-### Step 6:
-login as aws user for this first need to create a user or if you have exiting user then got to security and create on access key and secret key.
-
-```bash
-aws configure
-// give access key, secret key, output - json and region
-```
-
-### Step 7: Create the EKS Cluster
+### Step 6: Create the EKS Cluster
 
 The following command creates a new EKS cluster named EKS-1 in the ap-south-1 region. No worker nodes will be created at this stage.
 
 ```bash
 eksctl create cluster --name=EKS-1 \
-                      --region=ap-south-1 \
-                      --zones=ap-south-1a,ap-south-1b \
+                      --region=us-east-1 \
+                      --zones=us-east-1a,us-east-1b \
                       --without-nodegroup
 ```
 
@@ -66,7 +64,7 @@ EKS clusters need to associate with an IAM OIDC provider for enabling fine-grain
 
 ```bash
 eksctl utils associate-iam-oidc-provider \
-    --region ap-south-1 \
+    --region us-east-1 \
     --cluster EKS-1 \
     --approve
 ```
@@ -77,7 +75,7 @@ Now create a node group, which provisions the worker nodes for the EKS cluster. 
 
 ```bash
 eksctl create nodegroup --cluster=EKS-1 \
-                      --region=ap-south-1 \
+                      --region=us-east-1 \
                       --name=node2 \
                       --node-type=t3.medium \
                       --nodes=2 \
@@ -85,7 +83,7 @@ eksctl create nodegroup --cluster=EKS-1 \
                       --nodes-max=2 \
                       --node-volume-size=20 \
                       --ssh-access \
-                      --ssh-public-key=DevOps \
+                      --ssh-public-key=aws-key \
                       --managed \
                       --asg-access \
                       --external-dns-access \
